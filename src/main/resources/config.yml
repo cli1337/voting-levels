@@ -1,0 +1,47 @@
+#########################
+#                       #
+#     VOTING LEVELS     #
+#                       #
+#########################
+
+# PlaceholdersAPI:%votinglevels_PLAYERNAME_level%, %votinglevels_PLAYERNAME_votes%, %votinglevels_PLAYERNAME_needvotes%, %votinglevels_PLAYERNAME_rewardstext%, %votinglevels_PLAYERNAME_itemtitle%, %votinglevels_PLAYERNAME_itemlore%
+
+# {player_name}, {current_level} = local placeholders
+
+messages:
+  player-notfound: "<red>Player not found or has never played on this server."
+  no-access: "<red>You have no access for this command."
+  finished-levels: "<white>There's no voting level anymore, you <color:#cfcfcf>finished<white> all of them."
+  achieved-level: "<white>You achieved voting level <color:#cfcfcf>{level}<white>. Use <color:#cfcfcf>/votinglevels<white> to redeem it!"
+  redeemed-level: "<white>You redeemed voting level <color:#cfcfcf>{level}<white>"
+
+gui:
+  cant:
+    title: "<color:#005400>VOTING LEVELS <color:#cfcfcf>%votinglevels_{player_name}_level%"
+    lore:
+      - "<white>LEVEL</white> <color:#cfcfcf>%votinglevels_{player_name}_level%"
+      - "<white>Requirement</white> <color:#cfcfcf>%votinglevels_{player_name}_needvotes% <white>total votes"
+      - "<white>You have</white> <color:#cfcfcf>%votinglevels_{player_name}_votes%<white> votes"
+      - ""
+      - "<color:#cfcfcf>REWARDS"
+      - "{rewards_text}"
+  can:
+    title: "<color:#005400>VOTING LEVELS</green> <color:#cfcfcf>%votinglevels_{player_name}_level%"
+    lore:
+      - "<white>LEVEL</white> <color:#cfcfcf>%votinglevels_{player_name}_level%"
+      - "<white>Requirement</white> <color:#cfcfcf>%votinglevels_{player_name}_needvotes% total votes"
+      - "<white>You have</white> <color:#cfcfcf>%votinglevels_{player_name}_votes% votes"
+      - ""
+      - "<color:#cfcfcf>REWARDS"
+      - "{rewards_text}"
+      - ""
+      - "<white>CLICK TO REDEEM REWARD</white>"
+
+levels:
+  1:
+    req: 5
+    reward-text:
+      - "<white>BALANCE <green>+$15000</green><white> | (level * 15000)"
+    commands:
+      - "broadcast %player% broadcast from votinglevels!"
+      - "eco give %player% %Math_{current_level}*{15000}%"

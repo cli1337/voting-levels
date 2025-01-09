@@ -1,0 +1,14 @@
+name: VotingLevels
+version: '1.0'
+main: lv.cliquant.votinglevels.VotingLevels
+api-version: '1.21'
+authors:
+  - "Cliquant"
+load: STARTUP
+dependencies:
+  - name: VotingPlugin
+    required: true
+    bootstrap: false
+  - name: PlaceholderAPI
+    required: true
+    bootstrap: false
