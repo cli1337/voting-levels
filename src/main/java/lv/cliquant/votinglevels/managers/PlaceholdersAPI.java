@@ -43,7 +43,9 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
             }
 
             Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
-
+            if (currentLevel == null) {
+                return null;
+            }
             String placeholderType = parts[1];
 
             switch (placeholderType) {
@@ -58,7 +60,7 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
                 case "rewardstext":
                     return GUI.getRewardsTextString(offlinePlayer, currentLevel);
                 case "needvotes":
-                    return VotingLevels.getLevelsManager().calculateLeftVotes(VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()), VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints()) + "";
+                    return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
                 default:
                     return null;
             }

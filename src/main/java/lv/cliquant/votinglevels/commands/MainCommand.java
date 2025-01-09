@@ -19,10 +19,11 @@ public class MainCommand {
 
     @CommandPermission("votinglevels.use")
     public void use(Player player) {
-        VotingPluginUser voter = VotingPluginMain.getPlugin().getVotingPluginUserManager().getVotingPluginUser(player);
-        Integer voteCount = voter.getPoints();
-
-        LevelsGUI.getInventory(player).open(player);
+        if (VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId()) == null) {
+            player.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.finished-levels")));
+            return;
+        }
+        VotingLevels.levelsGUI.openInventory(player);
     }
 
     @Subcommand("update")
@@ -36,7 +37,23 @@ public class MainCommand {
         }
 
         VotingPluginUser voter = VotingPluginMain.getPlugin().getVotingPluginUserManager().getVotingPluginUser(offlinePlayer);
-        VotingLevels.getLevelsManager().updateUser(offlinePlayer, voter.getPoints());
+        VotingLevels.getLevelsManager().updateUser(offlinePlayer);
     }
 
+    @Subcommand("reload")
+    @CommandPermission("votinglevels.reload")
+    public void reload(CommandSender sender) {
+        VotingLevels.levelsGUI.openInventories.forEach((uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.closeInventory();
+            }
+        }));
+
+        VotingLevels.levelsGUI = new LevelsGUI();
+
+        VotingLevels.getLevelsManager().saveDatabaseData();
+        VotingLevels.get().reloadConfig();
+        sender.sendMessage("Reloaded VotingLevels");
+    }
 }

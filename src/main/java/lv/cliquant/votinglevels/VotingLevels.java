@@ -2,8 +2,11 @@ package lv.cliquant.votinglevels;
 
 import fr.minuskube.inv.InventoryManager;
 import lv.cliquant.votinglevels.commands.MainCommand;
+import lv.cliquant.votinglevels.gui.LevelsGUI;
+import lv.cliquant.votinglevels.listeners.VotingLevelGUIListeners;
 import lv.cliquant.votinglevels.managers.LevelsManager;
 import lv.cliquant.votinglevels.managers.PlaceholdersAPI;
+import lv.cliquant.votinglevels.objects.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +19,8 @@ public final class VotingLevels extends JavaPlugin {
     private static VotingLevels plugin;
     private FileConfiguration mainConfig;
     private static LevelsManager levelsManager;
+
+    public static LevelsGUI levelsGUI;
 
     private static InventoryManager inventoryManager;
 
@@ -35,10 +40,11 @@ public final class VotingLevels extends JavaPlugin {
         levelsManager.loadLevels();
         levelsManager.loadDatabaseData();
 
-        inventoryManager = new InventoryManager(this);
-        inventoryManager.init();
+        levelsGUI = new LevelsGUI();
 
         registerPlaceholderAPI();
+
+        getServer().getPluginManager().registerEvents(new VotingLevelGUIListeners(), this);
 
         Lamp<BukkitCommandActor> lamp = BukkitLamp.builder(this).build();
         lamp.register(new MainCommand());

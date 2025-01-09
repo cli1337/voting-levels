@@ -15,9 +15,9 @@ public class GUI {
         VotingPluginUser voter = VotingLevels.getLevelsManager().getVoter(offlinePlayer);
 
         if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, voter.getPoints())) {
-            return Text.placeholdersAPI(offlinePlayer, getLevelTitleString(offlinePlayer, currentLevel, "can").replace("{player_name}", offlinePlayer.getName()));
+            return Text.placeholdersAPI(offlinePlayer, getLevelTitleString(offlinePlayer, currentLevel, "can").replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + ""));
         } else {
-            return Text.placeholdersAPI(offlinePlayer, getLevelTitleString(offlinePlayer, currentLevel, "cant").replace("{player_name}", offlinePlayer.getName()));
+            return Text.placeholdersAPI(offlinePlayer, getLevelTitleString(offlinePlayer, currentLevel, "cant").replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + ""));
         }
     }
 
@@ -46,7 +46,7 @@ public class GUI {
         List<String> finalLoreStrings = new ArrayList<>();
 
         for (String lore : loreStrings) {
-            String replacedString = lore.replace("{current_level}", VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "").replace("{player_name}", offlinePlayer.getName());
+            String replacedString = lore.replace("{current_level}", VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "").replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + "");
             if (lore.equalsIgnoreCase("{rewards_text}")) {
                 for (String rewardText : getRewardsTextList(offlinePlayer, VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()))) {
                     finalLoreStrings.add(Text.placeholdersAPI(offlinePlayer, rewardText));

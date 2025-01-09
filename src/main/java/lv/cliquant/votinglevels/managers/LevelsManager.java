@@ -76,7 +76,7 @@ public class LevelsManager {
     }
 
     public boolean canRedeemLevel(Level level, int voteCount) {
-        return voteCount > level.getRequiredVotes();
+        return voteCount >= level.getRequiredVotes();
     }
 
     public int calculateLeftVotes(Level level, int voteCount) {
@@ -102,7 +102,6 @@ public class LevelsManager {
         for (Map.Entry<Integer, Level> entry : new TreeMap<>(levels).entrySet()) {
             Level level = entry.getValue();
 
-            // Check if the level is not already redeemed
             if (!redeemedLevels.contains(level.getLevel())) {
                 nextLevel = level;
                 break;
@@ -111,19 +110,9 @@ public class LevelsManager {
 
         return nextLevel;
     }
-    public void updateUser(OfflinePlayer player, int currentVotes) {
+    public void updateUser(OfflinePlayer player) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(player.getUniqueId(), new ArrayList<>());
-
-        for (Map.Entry<Integer, Level> entry : levels.entrySet()) {
-            int levelNumber = entry.getKey();
-            Level level = entry.getValue();
-
-            if (currentVotes >= level.getRequiredVotes() && !redeemedLevels.contains(levelNumber)) {
-                Player onlinePlayer = Bukkit.getPlayer((player.getName()));
-                String afterPlaceholders = Text.placeholdersAPI(player, VotingLevels.get().getConfig().getString("messages.achieved-level").replace("{level}", "" + levelNumber));
-                onlinePlayer.sendMessage(Text.colorize(afterPlaceholders));
-            }
-        }
+        Level currentLevel = getActiveLevel(player.getUniqueId());
 
         playerRedeemedLevels.put(player.getUniqueId(), redeemedLevels);
     }
@@ -131,13 +120,14 @@ public class LevelsManager {
     public void redeemLevel(OfflinePlayer player, Level level) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(player.getUniqueId(), new ArrayList<>());
         redeemedLevels.add(level.getLevel());
-        grantRewards(player.getName(), level);
+        playerRedeemedLevels.put(player.getUniqueId(), redeemedLevels);
+        grantRewards(player, level);
     }
 
-    private void grantRewards(String playerName, Level level) {
+    private void grantRewards(OfflinePlayer offlinePlayer, Level level) {
         for (String command : level.getCommands()) {
-            String formattedCommand = command.replace("{player}", playerName);
-            VotingLevels.get().getServer().dispatchCommand(VotingLevels.get().getServer().getConsoleSender(), formattedCommand);
+            String formattedCommand = command.replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + "").replace("{level}", level.getLevel() + "").replace("{needvotes}", level.getRequiredVotes() +"");
+            VotingLevels.get().getServer().dispatchCommand(VotingLevels.get().getServer().getConsoleSender(), Text.placeholdersAPI(offlinePlayer, formattedCommand));
         }
     }
 

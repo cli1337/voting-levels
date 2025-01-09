@@ -1,4 +1,5 @@
 lv\cliquant\votinglevels\objects\Level.class
+lv\cliquant\votinglevels\listeners\VotingLevelGUIListeners.class
 lv\cliquant\votinglevels\managers\PlaceholdersAPI.class
 lv\cliquant\votinglevels\utils\GUI.class
 lv\cliquant\votinglevels\gui\LevelsGUI.class
