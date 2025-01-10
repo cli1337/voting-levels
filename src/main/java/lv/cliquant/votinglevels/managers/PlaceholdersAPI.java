@@ -31,41 +31,78 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         String[] parts = params.split("_");
-        if (parts.length < 2) {
-            return null;
-        }
+        if (parts.length == 1) {
+            try {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
 
-        try {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(parts[0]);
-
-            if (!offlinePlayer.hasPlayedBefore()) {
-                return null;
-            }
-
-            Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
-            if (currentLevel == null) {
-                return null;
-            }
-            String placeholderType = parts[1];
-
-            switch (placeholderType) {
-                case "votes":
-                    return VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints() + "";
-                case "level":
-                    return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "";
-                case "itemtitle":
-                    return GUI.getUserLevelTitleString(offlinePlayer);
-                case "itemlore":
-                    return GUI.getUserLevelLoreString(offlinePlayer);
-                case "rewardstext":
-                    return GUI.getRewardsTextString(offlinePlayer, currentLevel);
-                case "needvotes":
-                    return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
-                default:
+                if (!offlinePlayer.hasPlayedBefore()) {
                     return null;
+                }
+
+                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
+                if (currentLevel == null) {
+                    return null;
+                }
+
+                String placeholderType = parts[0];
+
+                switch (placeholderType) {
+                    case "votes":
+                        return VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints() + "";
+                    case "level":
+                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(offlinePlayer.getUniqueId()) + "";
+                    case "activelevel":
+                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "";
+                    case "itemtitle":
+                        return GUI.getUserLevelTitleString(offlinePlayer);
+                    case "itemlore":
+                        return GUI.getUserLevelLoreString(offlinePlayer);
+                    case "rewardstext":
+                        return GUI.getRewardsTextString(offlinePlayer, currentLevel);
+                    case "needvotes":
+                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
+                    default:
+                        return null;
+                }
+            } catch (IllegalArgumentException e) {
+                return null;
             }
-        } catch (IllegalArgumentException e) {
-            return null;
+        } else if (parts.length >= 2) {
+            try {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(parts[0]);
+
+                if (!offlinePlayer.hasPlayedBefore()) {
+                    return null;
+                }
+
+                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
+                if (currentLevel == null) {
+                    return null;
+                }
+                String placeholderType = parts[1];
+
+                switch (placeholderType) {
+                    case "votes":
+                        return VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints() + "";
+                    case "level":
+                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(offlinePlayer.getUniqueId()) + "";
+                    case "activelevel":
+                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "";
+                    case "itemtitle":
+                        return GUI.getUserLevelTitleString(offlinePlayer);
+                    case "itemlore":
+                        return GUI.getUserLevelLoreString(offlinePlayer);
+                    case "rewardstext":
+                        return GUI.getRewardsTextString(offlinePlayer, currentLevel);
+                    case "needvotes":
+                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
+                    default:
+                        return null;
+                }
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
         }
+        return null;
     }
 }

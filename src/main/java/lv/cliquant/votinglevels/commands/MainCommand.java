@@ -14,6 +14,9 @@ import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Command("votinglevels")
 public class MainCommand {
 
@@ -55,5 +58,20 @@ public class MainCommand {
         VotingLevels.getLevelsManager().saveDatabaseData();
         VotingLevels.get().reloadConfig();
         sender.sendMessage("Reloaded VotingLevels");
+    }
+
+    @Subcommand("reset")
+    @CommandPermission("votinglevels.reset")
+    public void reset(CommandSender sender, String playerName) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.player-notfound")));
+            return;
+        }
+
+        List<Integer> redeemedLevels = new ArrayList<>();
+        VotingLevels.getLevelsManager().setPlayerRedeemedLevels(offlinePlayer.getUniqueId(), redeemedLevels);
+        sender.sendMessage("Reseted levels for player " + playerName);
     }
 }

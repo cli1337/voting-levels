@@ -110,6 +110,15 @@ public class LevelsManager {
 
         return nextLevel;
     }
+
+    public int getCurrentLevelNumber(UUID playerUUID) {
+        Level currentLevel = getActiveLevel(playerUUID);
+        if (currentLevel.getLevel() == 0) {
+            return 0;
+        }
+        return currentLevel.getLevel() - 1;
+    }
+
     public void updateUser(OfflinePlayer player) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(player.getUniqueId(), new ArrayList<>());
         Level currentLevel = getActiveLevel(player.getUniqueId());
@@ -129,6 +138,14 @@ public class LevelsManager {
             String formattedCommand = command.replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + "").replace("{level}", level.getLevel() + "").replace("{needvotes}", level.getRequiredVotes() +"");
             VotingLevels.get().getServer().dispatchCommand(VotingLevels.get().getServer().getConsoleSender(), Text.placeholdersAPI(offlinePlayer, formattedCommand));
         }
+    }
+
+    public Map<UUID, List<Integer>> getPlayerRedeemedLevels() {
+        return playerRedeemedLevels;
+    }
+
+    public void setPlayerRedeemedLevels(UUID playerUUID, List<Integer> something) {
+        playerRedeemedLevels.put(playerUUID, something);
     }
 
     public void loadDatabaseData() {
