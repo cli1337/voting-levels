@@ -18,12 +18,11 @@ public class VotingLevelGUIListeners implements Listener {
             String inventoryTitle = event.getView().getOriginalTitle();
             if (inventoryTitle.startsWith(VotingLevels.levelsGUI.BASE_INVENTORY_TITLE)) {
                 Player player = (Player) event.getWhoClicked();
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUniqueId());
                 Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId());
 
                 if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.TRIDENT) {
-                    if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints())) {
-                        VotingLevels.getLevelsManager().redeemLevel(offlinePlayer, currentLevel);
+                    if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, VotingLevels.getLevelsManager().getVoter(player).getPoints())) {
+                        VotingLevels.getLevelsManager().redeemLevel(player, currentLevel);
                         Level newLevel = VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId());
                         player.closeInventory();
                         if (newLevel != null) {

@@ -33,13 +33,11 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
         String[] parts = params.split("_");
         if (parts.length == 1) {
             try {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getName());
-
-                if (!offlinePlayer.hasPlayedBefore()) {
+                if (player == null) {
                     return null;
                 }
 
-                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
+                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId());
                 if (currentLevel == null) {
                     return null;
                 }
@@ -48,19 +46,19 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
 
                 switch (placeholderType) {
                     case "votes":
-                        return VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints() + "";
+                        return VotingLevels.getLevelsManager().getVoter(player).getPoints() + "";
                     case "level":
-                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(offlinePlayer.getUniqueId()) + "";
+                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(player.getUniqueId()) + "";
                     case "activelevel":
-                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "";
+                        return VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId()).getLevel() + "";
                     case "itemtitle":
-                        return GUI.getUserLevelTitleString(offlinePlayer);
+                        return GUI.getUserLevelTitleString(player);
                     case "itemlore":
-                        return GUI.getUserLevelLoreString(offlinePlayer);
+                        return GUI.getUserLevelLoreString(player);
                     case "rewardstext":
-                        return GUI.getRewardsTextString(offlinePlayer, currentLevel);
+                        return GUI.getRewardsTextString(player, currentLevel);
                     case "needvotes":
-                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
+                        return VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId()).getRequiredVotes() + "";
                     default:
                         return null;
                 }
@@ -69,13 +67,13 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
             }
         } else if (parts.length >= 2) {
             try {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(parts[0]);
+                Player player1 = Bukkit.getPlayer(parts[0]);
 
-                if (!offlinePlayer.hasPlayedBefore()) {
+                if (player1 == null) {
                     return null;
                 }
 
-                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId());
+                Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player1.getUniqueId());
                 if (currentLevel == null) {
                     return null;
                 }
@@ -83,19 +81,19 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
 
                 switch (placeholderType) {
                     case "votes":
-                        return VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints() + "";
+                        return VotingLevels.getLevelsManager().getVoter(player1).getPoints() + "";
                     case "level":
-                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(offlinePlayer.getUniqueId()) + "";
+                        return VotingLevels.getLevelsManager().getCurrentLevelNumber(player1.getUniqueId()) + "";
                     case "activelevel":
-                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getLevel() + "";
+                        return VotingLevels.getLevelsManager().getActiveLevel(player1.getUniqueId()).getLevel() + "";
                     case "itemtitle":
-                        return GUI.getUserLevelTitleString(offlinePlayer);
+                        return GUI.getUserLevelTitleString(player1);
                     case "itemlore":
-                        return GUI.getUserLevelLoreString(offlinePlayer);
+                        return GUI.getUserLevelLoreString(player1);
                     case "rewardstext":
-                        return GUI.getRewardsTextString(offlinePlayer, currentLevel);
+                        return GUI.getRewardsTextString(player1, currentLevel);
                     case "needvotes":
-                        return VotingLevels.getLevelsManager().getActiveLevel(offlinePlayer.getUniqueId()).getRequiredVotes() + "";
+                        return VotingLevels.getLevelsManager().getActiveLevel(player1.getUniqueId()).getRequiredVotes() + "";
                     default:
                         return null;
                 }

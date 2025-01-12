@@ -94,8 +94,8 @@ public class LevelsManager {
 
     public Level getActiveLevel(UUID playerUUID) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(playerUUID, new ArrayList<>());
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
-        VotingPluginUser voter = getVoter(offlinePlayer);
+        Player player = Bukkit.getPlayer(playerUUID);
+        VotingPluginUser voter = getVoter(player);
 
         Level nextLevel = null;
 
@@ -119,24 +119,24 @@ public class LevelsManager {
         return currentLevel.getLevel() - 1;
     }
 
-    public void updateUser(OfflinePlayer player) {
+    public void updateUser(Player player) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(player.getUniqueId(), new ArrayList<>());
         Level currentLevel = getActiveLevel(player.getUniqueId());
 
         playerRedeemedLevels.put(player.getUniqueId(), redeemedLevels);
     }
 
-    public void redeemLevel(OfflinePlayer player, Level level) {
+    public void redeemLevel(Player player, Level level) {
         List<Integer> redeemedLevels = playerRedeemedLevels.getOrDefault(player.getUniqueId(), new ArrayList<>());
         redeemedLevels.add(level.getLevel());
         playerRedeemedLevels.put(player.getUniqueId(), redeemedLevels);
         grantRewards(player, level);
     }
 
-    private void grantRewards(OfflinePlayer offlinePlayer, Level level) {
+    private void grantRewards(Player player, Level level) {
         for (String command : level.getCommands()) {
-            String formattedCommand = command.replace("{player_name}", offlinePlayer.getName()).replace("{player_uuid}", offlinePlayer.getUniqueId() + "").replace("{level}", level.getLevel() + "").replace("{needvotes}", level.getRequiredVotes() +"");
-            VotingLevels.get().getServer().dispatchCommand(VotingLevels.get().getServer().getConsoleSender(), Text.placeholdersAPI(offlinePlayer, formattedCommand));
+            String formattedCommand = command.replace("{player_name}", player.getName()).replace("{player_uuid}", player.getUniqueId() + "").replace("{level}", level.getLevel() + "").replace("{needvotes}", level.getRequiredVotes() +"");
+            VotingLevels.get().getServer().dispatchCommand(VotingLevels.get().getServer().getConsoleSender(), Text.placeholdersAPI(player, formattedCommand));
         }
     }
 

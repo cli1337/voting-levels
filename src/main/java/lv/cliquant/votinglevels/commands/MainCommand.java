@@ -32,15 +32,15 @@ public class MainCommand {
     @Subcommand("update")
     @CommandPermission("votinglevels.update")
     public void update(CommandSender sender, String playerName) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        Player player = Bukkit.getPlayer(playerName);
 
-        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+        if (player == null && !player.isOnline()) {
             sender.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.player-notfound")));
             return;
         }
 
-        VotingPluginUser voter = VotingPluginMain.getPlugin().getVotingPluginUserManager().getVotingPluginUser(offlinePlayer);
-        VotingLevels.getLevelsManager().updateUser(offlinePlayer);
+        VotingPluginUser voter = VotingPluginMain.getPlugin().getVotingPluginUserManager().getVotingPluginUser(player);
+        VotingLevels.getLevelsManager().updateUser(player);
     }
 
     @Subcommand("reload")
@@ -63,15 +63,15 @@ public class MainCommand {
     @Subcommand("reset")
     @CommandPermission("votinglevels.reset")
     public void reset(CommandSender sender, String playerName) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        Player player = Bukkit.getPlayer(playerName);
 
-        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+        if (player == null) {
             sender.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.player-notfound")));
             return;
         }
 
         List<Integer> redeemedLevels = new ArrayList<>();
-        VotingLevels.getLevelsManager().setPlayerRedeemedLevels(offlinePlayer.getUniqueId(), redeemedLevels);
+        VotingLevels.getLevelsManager().setPlayerRedeemedLevels(player.getUniqueId(), redeemedLevels);
         sender.sendMessage("Reseted levels for player " + playerName);
     }
 }

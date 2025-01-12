@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,21 +42,20 @@ public class LevelsGUI {
         player.openInventory(inventory);
     }
 
-    private void setupLevelItem(org.bukkit.inventory.Inventory inventory, Player player) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUniqueId());
+    private void setupLevelItem(Inventory inventory, Player player) {
         Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId());
         ItemStack itemStack = new ItemStack(Material.TRIDENT, 1);
         ItemMeta meta = itemStack.getItemMeta();
 
         if (meta != null) {
-            meta.displayName(Text.colorize(GUI.getUserLevelTitleString(offlinePlayer)));
-            List<String> LORE = GUI.getUserLevelLoreStringList(offlinePlayer);
+            meta.displayName(Text.colorize(GUI.getUserLevelTitleString(player)));
+            List<String> LORE = GUI.getUserLevelLoreStringList(player);
 
             meta.lore(LORE.stream()
                     .map(Text::colorize)
                     .collect(Collectors.toList()));
 
-            if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, VotingLevels.getLevelsManager().getVoter(offlinePlayer).getPoints())) {
+            if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, VotingLevels.getLevelsManager().getVoter(player).getPoints())) {
                 meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
