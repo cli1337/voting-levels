@@ -67,10 +67,12 @@ public class PlaceholdersAPI extends PlaceholderExpansion {
             }
         } else if (parts.length >= 2) {
             try {
-                Player player1 = Bukkit.getPlayer(parts[0]);
-
-                if (player1 == null) {
-                    return null;
+                OfflinePlayer player1;
+                Player player_ = Bukkit.getPlayerExact(parts[0]);
+                if (player_ != null) {
+                    player1 = player_;
+                } else {
+                    player1 = Bukkit.getOfflinePlayer(parts[0]);
                 }
 
                 Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player1.getUniqueId());
