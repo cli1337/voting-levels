@@ -44,7 +44,7 @@ public class LevelsGUI {
 
     private void setupLevelItem(Inventory inventory, Player player) {
         Level currentLevel = VotingLevels.getLevelsManager().getActiveLevel(player.getUniqueId());
-        ItemStack itemStack = new ItemStack(Material.TRIDENT, 1);
+        ItemStack itemStack = new ItemStack(Material.TRIAL_KEY, 1);
         ItemMeta meta = itemStack.getItemMeta();
 
         if (meta != null) {
@@ -56,12 +56,13 @@ public class LevelsGUI {
                     .collect(Collectors.toList()));
 
             if (VotingLevels.getLevelsManager().canRedeemLevel(currentLevel, VotingLevels.getLevelsManager().getVoter(player).getPoints())) {
-                meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-                meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+                meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, false);
             }
+
+            for(ItemFlag flag : ItemFlag.values()) {
+                meta.addItemFlags(flag);
+            }
+
             itemStack.setItemMeta(meta);
         }
 

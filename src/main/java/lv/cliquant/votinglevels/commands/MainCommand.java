@@ -31,9 +31,7 @@ public class MainCommand {
 
     @Subcommand("update")
     @CommandPermission("votinglevels.update")
-    public void update(CommandSender sender, String playerName) {
-        Player player = Bukkit.getPlayer(playerName);
-
+    public void update(CommandSender sender, Player player) {
         if (player == null && !player.isOnline()) {
             sender.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.player-notfound")));
             return;
@@ -62,9 +60,7 @@ public class MainCommand {
 
     @Subcommand("reset")
     @CommandPermission("votinglevels.reset")
-    public void reset(CommandSender sender, String playerName) {
-        Player player = Bukkit.getPlayer(playerName);
-
+    public void reset(CommandSender sender, Player player) {
         if (player == null) {
             sender.sendMessage(Text.colorize(VotingLevels.get().getConfig().getString("messages.player-notfound")));
             return;
@@ -72,6 +68,6 @@ public class MainCommand {
 
         List<Integer> redeemedLevels = new ArrayList<>();
         VotingLevels.getLevelsManager().setPlayerRedeemedLevels(player.getUniqueId(), redeemedLevels);
-        sender.sendMessage("Reseted levels for player " + playerName);
+        sender.sendMessage("Reseted levels for player " + player.getName());
     }
 }

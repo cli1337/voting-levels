@@ -1,6 +1,7 @@
 package lv.cliquant.votinglevels;
 
 import fr.minuskube.inv.InventoryManager;
+import io.papermc.paper.brigadier.PaperBrigadier;
 import lv.cliquant.votinglevels.commands.MainCommand;
 import lv.cliquant.votinglevels.gui.LevelsGUI;
 import lv.cliquant.votinglevels.listeners.VotingLevelGUIListeners;
